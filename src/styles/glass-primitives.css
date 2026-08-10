@@ -1,0 +1,110 @@
+/* Tutor AI — Liquid Glass primitive layer (master prompt §2.1–2.3).
+   Three stacked effects on every glass surface:
+     1. body blur+saturate            → backdrop-filter (wide support)
+     2. ::before  specular highlight  → conic-gradient ring, brightest at one
+                                          corner, fading around the curve
+     3. ::after   refraction band     → filter:url(#liquid-refract) distorted
+                                          highlight blended over the edge,
+                                          reading as light bending at the rim
+   True backdrop-pixel refraction (backdrop-filter: url(#svg-filter)) has
+   inconsistent Chromium support, so #3 distorts an overlay band via
+   mix-blend-mode rather than the live pixels behind the surface — an honest
+   approximation, not a fake blur relabeled as refraction. */
+
+.glass-surface {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  backdrop-filter: blur(var(--blur-layer-2)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-layer-2)) saturate(180%);
+  background: var(--glass-surface-2);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass-rest);
+}
+
+.glass-surface-deep {
+  background: var(--glass-surface-1);
+  backdrop-filter: blur(var(--blur-layer-1)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-layer-1)) saturate(180%);
+}
+
+.glass-surface-top {
+  background: var(--glass-surface-3);
+  backdrop-filter: blur(var(--blur-layer-3)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-layer-3)) saturate(180%);
+  box-shadow: var(--shadow-glass-elevated);
+}
+
+.glass-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1.25px;
+  background: conic-gradient(from 210deg at 22% 12%, var(--glass-highlight) 0deg, transparent 100deg 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 4px;
+  background: var(--glass-highlight);
+  opacity: 0.35;
+  filter: url(#liquid-refract) blur(2px);
+  mix-blend-mode: overlay;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass-surface,
+  .glass-surface-deep,
+  .glass-surface-top {
+    background: var(--canvas-elevated);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-surface::after {
+    display: none;
+  }
+}
+
+/* Dynamic tinting (§2.1.3) — low-saturation semantic overlays for quiz answers */
+.glass-tint-success {
+  background-color: color-mix(in srgb, var(--success-tint) 100%, var(--glass-surface-2));
+  border-color: color-mix(in srgb, var(--success) 35%, var(--glass-border));
+}
+
+.glass-tint-error {
+  background-color: color-mix(in srgb, var(--error-tint) 100%, var(--glass-surface-2));
+  border-color: color-mix(in srgb, var(--error) 35%, var(--glass-border));
+}
+
+/* Text-on-glass contrast fallback (master prompt §2.4: scrim, never less blur) */
+.glass-scrim {
+  position: relative;
+}
+.glass-scrim::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glass-scrim);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+}
+.glass-scrim > * {
+  position: relative;
+  z-index: 1;
+}

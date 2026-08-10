@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "../styles/glass-tokens.css";
+@import "../styles/glass-primitives.css";
 
 :root {
   --background: var(--canvas);
