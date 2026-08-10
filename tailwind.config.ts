@@ -64,6 +64,11 @@ const config: Config = {
       fontFamily: {
         display: ["'SF Pro Display'", "'Noto Sans Thai'", "Inter", "sans-serif"],
       },
+      keyframes: {
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
     },
   },
   plugins: [tailwindcssAnimate, typography],

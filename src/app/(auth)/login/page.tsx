@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { GlassButton } from "@/components/glass/GlassButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,9 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center p-4">
+      <div className="fixed right-4 top-4">
+        <ThemeToggle />
+      </div>
       <GlassCard depth="top" radius="xl" className="w-full max-w-sm p-8 text-center">
         <h1 className="font-display text-heading-lg font-bold text-ink-primary">Tutor AI</h1>
         <p className="mt-2 text-body-md text-ink-secondary">ติวเตอร์ AI ส่วนตัวของคุณ</p>

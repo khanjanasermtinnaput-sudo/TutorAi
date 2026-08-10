@@ -15,6 +15,7 @@ import { KeyPointsSummary } from "@/components/topic/KeyPointsSummary";
 import { FormulaList } from "@/components/topic/FormulaList";
 import { FrequentlyTestedList } from "@/components/topic/FrequentlyTestedBadge";
 import { BillingTierCards } from "@/components/settings/BillingTierCards";
+import { GlassSkeleton } from "@/components/glass/GlassSkeleton";
 
 const SUBJECTS = [
   { id: "math", label: "คณิตศาสตร์", icon: <Calculator className="h-4 w-4" /> },
@@ -142,6 +143,14 @@ export default function GlassPreviewPage() {
               ]}
             />
             <FrequentlyTestedList items={["โจทย์หาอนุพันธ์ของฟังก์ชันประกอบ มักออกสอบเพราะทดสอบความเข้าใจ chain rule"]} />
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 font-display text-heading-md font-semibold text-ink-primary">GlassSkeleton (shimmer)</h2>
+          <div className="flex flex-col gap-2">
+            <GlassSkeleton className="h-6 w-1/3" />
+            <GlassSkeleton className="h-24" />
           </div>
         </section>
 
