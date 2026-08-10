@@ -1,0 +1,102 @@
+/* Tutor AI — "iOS 26 Liquid Glass" design tokens (master prompt §2.2).
+   Light values live on :root; dark values are layered on top twice —
+   once for the OS-level prefers-color-scheme default, once for an explicit
+   [data-theme="dark"] toggle — so next-themes' class strategy always wins. */
+
+:root {
+  /* canvas */
+  --canvas: #f4f6fa;
+  --canvas-elevated: rgba(255, 255, 255, 0.55);
+
+  /* glass surfaces */
+  --glass-surface-1: rgba(255, 255, 255, 0.14);
+  --glass-surface-2: rgba(255, 255, 255, 0.22);
+  --glass-surface-3: rgba(255, 255, 255, 0.32);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+  --glass-scrim: rgba(10, 12, 20, 0.08);
+
+  /* ink */
+  --ink-primary: #12151c;
+  --ink-secondary: #4a5063;
+  --ink-muted: #8a90a3;
+
+  /* accent */
+  --accent-primary: #3d7eff;
+  --accent-primary-deep: #2657d9;
+  --accent-secondary: #8b5cf6;
+  --gradient-liquid: linear-gradient(135deg, #3d7eff 0%, #8b5cf6 55%, #22d3ee 100%);
+
+  /* semantic */
+  --success: #22c55e;
+  --success-tint: rgba(34, 197, 94, 0.1);
+  --error: #ef4444;
+  --error-tint: rgba(239, 68, 68, 0.1);
+  --warning: #f59e0b;
+  --warning-tint: rgba(245, 158, 11, 0.1);
+
+  /* radius */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-droplet: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  --radius-full: 9999px;
+
+  /* blur */
+  --blur-layer-1: 40px;
+  --blur-layer-2: 24px;
+  --blur-layer-3: 12px;
+
+  /* shadow */
+  --shadow-glass-rest: 0 8px 32px rgba(31, 41, 84, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --shadow-glass-elevated: 0 16px 48px rgba(31, 41, 84, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --shadow-glass-pressed: 0 4px 12px rgba(31, 41, 84, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0b0e14;
+    --canvas-elevated: rgba(22, 26, 36, 0.55);
+
+    --glass-surface-1: rgba(255, 255, 255, 0.06);
+    --glass-surface-2: rgba(255, 255, 255, 0.09);
+    --glass-surface-3: rgba(255, 255, 255, 0.13);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-scrim: rgba(0, 0, 0, 0.22);
+
+    --ink-primary: #f4f6fa;
+    --ink-secondary: #b7bccb;
+    --ink-muted: #7d8296;
+
+    --shadow-glass-rest: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --shadow-glass-elevated: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    --shadow-glass-pressed: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+}
+
+:root[data-theme="dark"] {
+  --canvas: #0b0e14;
+  --canvas-elevated: rgba(22, 26, 36, 0.55);
+
+  --glass-surface-1: rgba(255, 255, 255, 0.06);
+  --glass-surface-2: rgba(255, 255, 255, 0.09);
+  --glass-surface-3: rgba(255, 255, 255, 0.13);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.35);
+  --glass-scrim: rgba(0, 0, 0, 0.22);
+
+  --ink-primary: #f4f6fa;
+  --ink-secondary: #b7bccb;
+  --ink-muted: #7d8296;
+
+  --shadow-glass-rest: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-glass-elevated: 0 16px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-glass-pressed: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink-primary);
+}
