@@ -6,6 +6,7 @@ import { MessageBubble, type Citation } from "./MessageBubble";
 import { ChatInput } from "./ChatInput";
 import { SubjectSelector, type Subject } from "./SubjectSelector";
 import { GlassFab } from "@/components/glass/GlassFab";
+import { QuizGeneratorModal } from "@/components/quiz/QuizGeneratorModal";
 import { createClient } from "@/lib/supabase/client";
 
 export interface ChatMessageView {
@@ -30,7 +31,11 @@ export function ChatWindow({
   const [subjectId, setSubjectId] = useState<string | null>(initialSubjectId);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [quizModalOpen, setQuizModalOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Simple auto-suggest: the student's most recent message, as a topic starting point.
+  const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -94,10 +99,22 @@ export function ChatWindow({
       <div className="relative">
         <ChatInput onSend={handleSend} disabled={streaming} />
         <div className="absolute -top-20 right-0">
-          {/* Wired to QuizGeneratorModal in Phase 5 */}
-          <GlassFab icon={<Sparkles className="h-5 w-5" />} label="สร้างข้อสอบ" disabled />
+          <GlassFab
+            icon={<Sparkles className="h-5 w-5" />}
+            label="สร้างข้อสอบ"
+            onClick={() => setQuizModalOpen(true)}
+          />
         </div>
       </div>
+
+      <QuizGeneratorModal
+        open={quizModalOpen}
+        onOpenChange={setQuizModalOpen}
+        subjects={subjects}
+        initialSubjectId={subjectId}
+        suggestedTopic={lastUserMessage}
+        sessionId={sessionId}
+      />
     </div>
   );
 }

@@ -122,3 +122,12 @@ export async function routeChatCompletion(
     throw new AllProvidersFailedError(openRouterError, geminiError);
   }
 }
+
+/** Drains a chunk generator into one string — for callers (quiz generation,
+ * topic summaries) that need the complete response before doing anything
+ * with it, rather than streaming it to a client. */
+export async function collectChunks(gen: AsyncGenerator<string>): Promise<string> {
+  let out = "";
+  for await (const chunk of gen) out += chunk;
+  return out;
+}

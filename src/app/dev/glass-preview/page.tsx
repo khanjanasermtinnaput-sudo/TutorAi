@@ -9,6 +9,8 @@ import { GlassModal } from "@/components/glass/GlassModal";
 import { GlassFab } from "@/components/glass/GlassFab";
 import { GlassChatBubble } from "@/components/glass/GlassChatBubble";
 import { GlassPillSelector } from "@/components/glass/GlassPillSelector";
+import { QuizQuestionCard } from "@/components/quiz/QuizQuestionCard";
+import { QuizProgressBar } from "@/components/quiz/QuizProgressBar";
 
 const SUBJECTS = [
   { id: "math", label: "คณิตศาสตร์", icon: <Calculator className="h-4 w-4" /> },
@@ -20,6 +22,7 @@ export default function GlassPreviewPage() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [modalOpen, setModalOpen] = useState(false);
   const [subject, setSubject] = useState<string | null>("math");
+  const [quizAnswer, setQuizAnswer] = useState<"A" | "B" | "C" | "D" | null>(null);
   // next-themes can't know the theme during SSR — rendering theme/resolvedTheme
   // before mount would print different text server vs. client and trigger a
   // hydration mismatch. Wait one paint so both renders agree.
@@ -98,6 +101,30 @@ export default function GlassPreviewPage() {
           <div className="flex flex-col gap-3">
             <GlassChatBubble role="assistant">สวัสดีครับ วันนี้อยากเรียนเรื่องอะไรดี?</GlassChatBubble>
             <GlassChatBubble role="user">อยากทบทวนเรื่องอนุพันธ์ครับ</GlassChatBubble>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 font-display text-heading-md font-semibold text-ink-primary">Quiz components</h2>
+          <div className="flex flex-col gap-4">
+            <QuizProgressBar answered={3} total={10} />
+            <QuizQuestionCard
+              mode="answer"
+              index={0}
+              questionText="อนุพันธ์ของ $x^2$ คืออะไร"
+              choices={{ A: "$x$", B: "$2x$", C: "$x^2$", D: "$2$" }}
+              selected={quizAnswer}
+              onSelect={setQuizAnswer}
+            />
+            <QuizQuestionCard
+              mode="review"
+              index={1}
+              questionText="2 + 2 เท่ากับเท่าไร"
+              choices={{ A: "3", B: "4", C: "5", D: "6" }}
+              correctChoice="B"
+              userAnswer="C"
+              explanation="บวกเลข 2 กับ 2 ทีละหลัก ได้ผลลัพธ์เป็น 4 ตามหลักการบวกจำนวนเต็มพื้นฐาน"
+            />
           </div>
         </section>
 
