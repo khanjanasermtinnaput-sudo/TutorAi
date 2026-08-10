@@ -40,7 +40,11 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const isPublic = PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));
+  // /dev/* is a debug-only component showcase (master prompt §9 Phase 3) —
+  // exempt from the auth guard outside production so it's usable without
+  // signing in, but never reachable unauthenticated once deployed for real.
+  const isDevPreview = pathname.startsWith("/dev/") && process.env.NODE_ENV !== "production";
+  const isPublic = isDevPreview || PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));
 
   const { response, user, supabase } = await updateSession(request);
 
