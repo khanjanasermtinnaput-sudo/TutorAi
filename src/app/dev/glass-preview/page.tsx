@@ -11,6 +11,9 @@ import { GlassChatBubble } from "@/components/glass/GlassChatBubble";
 import { GlassPillSelector } from "@/components/glass/GlassPillSelector";
 import { QuizQuestionCard } from "@/components/quiz/QuizQuestionCard";
 import { QuizProgressBar } from "@/components/quiz/QuizProgressBar";
+import { KeyPointsSummary } from "@/components/topic/KeyPointsSummary";
+import { FormulaList } from "@/components/topic/FormulaList";
+import { FrequentlyTestedList } from "@/components/topic/FrequentlyTestedBadge";
 
 const SUBJECTS = [
   { id: "math", label: "คณิตศาสตร์", icon: <Calculator className="h-4 w-4" /> },
@@ -125,6 +128,19 @@ export default function GlassPreviewPage() {
               userAnswer="C"
               explanation="บวกเลข 2 กับ 2 ทีละหลัก ได้ผลลัพธ์เป็น 4 ตามหลักการบวกจำนวนเต็มพื้นฐาน"
             />
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 font-display text-heading-md font-semibold text-ink-primary">Topic deep-dive components</h2>
+          <div className="flex flex-col gap-4">
+            <KeyPointsSummary points={["อนุพันธ์คืออัตราการเปลี่ยนแปลงของฟังก์ชัน ณ จุดหนึ่ง", "เขียนแทนด้วยสัญลักษณ์ $f'(x)$ หรือ $\\frac{dy}{dx}$"]} />
+            <FormulaList
+              formulas={[
+                { name: "กฎกำลัง", formula: "$\\frac{d}{dx}x^n = nx^{n-1}$", when_to_use: "ใช้หาอนุพันธ์ของพจน์ที่มีเลขชี้กำลัง" },
+              ]}
+            />
+            <FrequentlyTestedList items={["โจทย์หาอนุพันธ์ของฟังก์ชันประกอบ มักออกสอบเพราะทดสอบความเข้าใจ chain rule"]} />
           </div>
         </section>
 

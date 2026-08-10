@@ -88,7 +88,7 @@ test("generateQuiz: throws after exhausting retries on persistently invalid outp
     openrouter: () => gen("still not json"),
     gemini: () => gen("still not json either"),
   };
-  await assert.rejects(() => generateQuiz(baseParams, deps), /AI failed to produce a valid quiz/);
+  await assert.rejects(() => generateQuiz(baseParams, deps), /AI failed to produce valid JSON/);
 });
 
 test("generateQuiz: strips markdown code fences before parsing", async () => {

@@ -2,35 +2,15 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 import { motion } from "framer-motion";
 import { GlassCard } from "@/components/glass/GlassCard";
+import { InlineMath } from "@/components/InlineMath";
 import { cn } from "@/lib/utils/cn";
 
 export type ChoiceKey = "A" | "B" | "C" | "D";
 export type Choices = Record<ChoiceKey, string>;
 
 const CHOICE_KEYS: ChoiceKey[] = ["A", "B", "C", "D"];
-
-function MathText({ text }: { text: string }) {
-  return (
-    <span className="prose prose-sm max-w-none text-inherit">
-      <ReactMarkdown
-        remarkPlugins={[remarkMath]}
-        rehypePlugins={[rehypeKatex]}
-        // Renders inline (no wrapping <p>) — this is used inside <p>/<button>
-        // elements elsewhere, and a nested <p> is invalid HTML that breaks
-        // hydration (the browser auto-closes the outer <p>, so server and
-        // client DOM trees disagree).
-        components={{ p: ({ children }) => <>{children}</> }}
-      >
-        {text}
-      </ReactMarkdown>
-    </span>
-  );
-}
 
 interface QuizQuestionCardBaseProps {
   index: number;
@@ -60,7 +40,7 @@ export function QuizQuestionCard(props: QuizQuestionCardProps) {
   return (
     <GlassCard className="p-5">
       <p className="mb-3 font-display font-medium text-ink-primary">
-        {index + 1}. <MathText text={questionText} />
+        {index + 1}. <InlineMath text={questionText} />
       </p>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {CHOICE_KEYS.map((key) => {
@@ -78,7 +58,7 @@ export function QuizQuestionCard(props: QuizQuestionCardProps) {
                 )}
               >
                 <span className="mr-2 font-semibold">{key}.</span>
-                <MathText text={label} />
+                <InlineMath text={label} />
               </button>
             );
           }
@@ -95,7 +75,7 @@ export function QuizQuestionCard(props: QuizQuestionCardProps) {
               )}
             >
               <span className="mr-2 font-semibold">{key}.</span>
-              <MathText text={label} />
+              <InlineMath text={label} />
               {isCorrect && <span className="ml-2 text-xs text-success">คำตอบที่ถูกต้อง</span>}
               {isUserWrong && <span className="ml-2 text-xs text-error">คำตอบของคุณ</span>}
             </div>
@@ -120,7 +100,7 @@ export function QuizQuestionCard(props: QuizQuestionCardProps) {
               transition={{ type: "spring", stiffness: 300, damping: 28 }}
               className="mt-2 overflow-hidden rounded-md bg-canvas-elevated p-3 text-sm text-ink-secondary"
             >
-              <MathText text={props.explanation} />
+              <InlineMath text={props.explanation} />
             </motion.div>
           )}
         </div>
