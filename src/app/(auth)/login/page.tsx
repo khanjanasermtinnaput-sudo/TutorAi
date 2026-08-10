@@ -26,7 +26,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-canvas p-4">
+    <main className="flex min-h-screen items-center justify-center p-4">
       <GlassCard depth="top" radius="xl" className="w-full max-w-sm p-8 text-center">
         <h1 className="font-display text-heading-lg font-bold text-ink-primary">Tutor AI</h1>
         <p className="mt-2 text-body-md text-ink-secondary">ติวเตอร์ AI ส่วนตัวของคุณ</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Sparkles, Calculator, FlaskConical, Atom } from "lucide-react";
 import { GlassCard } from "@/components/glass/GlassCard";
@@ -20,9 +20,14 @@ export default function GlassPreviewPage() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [modalOpen, setModalOpen] = useState(false);
   const [subject, setSubject] = useState<string | null>("math");
+  // next-themes can't know the theme during SSR — rendering theme/resolvedTheme
+  // before mount would print different text server vs. client and trigger a
+  // hydration mismatch. Wait one paint so both renders agree.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
-    <main className="min-h-screen bg-canvas p-8">
+    <main className="min-h-screen p-8">
       <div className="mx-auto flex max-w-4xl flex-col gap-10">
         <header className="flex items-center justify-between">
           <div>
@@ -34,7 +39,7 @@ export default function GlassPreviewPage() {
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
             data-testid="theme-toggle"
           >
-            Theme: {theme} (resolved: {resolvedTheme})
+            {mounted ? `Theme: ${theme} (resolved: ${resolvedTheme})` : "Theme: —"}
           </GlassButton>
         </header>
 

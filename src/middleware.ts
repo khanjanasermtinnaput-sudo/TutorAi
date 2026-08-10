@@ -51,6 +51,12 @@ export async function middleware(request: NextRequest) {
   if (isPublic) return response;
 
   if (!user) {
+    // API callers (fetch()) follow redirects by default — a redirect to the
+    // /login HTML page would come back as a 200 with HTML in the body, which
+    // client code would misread as a real response instead of an auth error.
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
@@ -64,6 +70,9 @@ export async function middleware(request: NextRequest) {
 
     const onboarded = profile?.onboarding_completed ?? false;
     if (!onboarded && pathname !== "/onboarding") {
+      if (pathname.startsWith("/api/")) {
+        return NextResponse.json({ error: "onboarding_required" }, { status: 403 });
+      }
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
     if (onboarded && pathname === "/onboarding") {

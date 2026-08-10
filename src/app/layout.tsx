@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 import { Providers } from "./providers";
 import { LiquidFilters } from "@/components/glass/LiquidFilters";
+import { LiquidBackdrop } from "@/components/glass/LiquidBackdrop";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,6 +31,7 @@ export default function RootLayout({
     <html lang="th" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <LiquidFilters />
+        <LiquidBackdrop />
         <Providers>{children}</Providers>
       </body>
     </html>

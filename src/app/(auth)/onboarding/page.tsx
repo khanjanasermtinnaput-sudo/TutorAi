@@ -19,7 +19,7 @@ export default async function OnboardingPage() {
   if (profile?.onboarding_completed) redirect("/chat");
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-canvas p-4">
+    <main className="flex min-h-screen items-center justify-center p-4">
       <OnboardingFlow userId={user.id} />
     </main>
   );
