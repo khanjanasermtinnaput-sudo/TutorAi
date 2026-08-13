@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { buildSystemPrompt } from "@/lib/ai/prompts/system-prompt";
 import { routeChatCompletion, AllProvidersFailedError } from "@/lib/ai/ai-router";
+import { generateSessionTitle } from "@/lib/ai/session-title";
 import type { ChatMessage } from "@/lib/ai/openrouter";
 
 const bodySchema = z.object({
@@ -95,6 +96,25 @@ export async function POST(request: NextRequest) {
             .from("chat_messages")
             .insert({ session_id: sessionId, role: "assistant", content: fullText, ai_provider: provider });
           await supabase.from("usage_logs").insert({ user_id: user.id, action_type: "chat_message" });
+
+          if ((history?.length ?? 0) === 0) {
+            try {
+              const title = await generateSessionTitle({
+                userMessage: message,
+                assistantReply: fullText,
+                openRouterApiKey: process.env.OPENROUTER_API_KEY,
+                openRouterModel: process.env.OPENROUTER_MODEL,
+                geminiApiKey: process.env.GEMINI_API_KEY,
+                geminiModel: process.env.GEMINI_MODEL || "gemini-3.6-flash",
+              });
+              if (title) {
+                await supabase.from("chat_sessions").update({ title }).eq("id", sessionId);
+              }
+            } catch (err) {
+              console.error("[TutorAI] session title generation failed", err);
+            }
+          }
+
           controller.close();
           return;
         }

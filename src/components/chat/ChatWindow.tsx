@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Sparkles, BookOpen } from "lucide-react";
 import { MessageBubble, type Citation } from "./MessageBubble";
@@ -28,6 +29,7 @@ export function ChatWindow({
   initialSubjectId: string | null;
   initialMessages: ChatMessageView[];
 }) {
+  const router = useRouter();
   const [messages, setMessages] = useState<ChatMessageView[]>(initialMessages);
   const [subjectId, setSubjectId] = useState<string | null>(initialSubjectId);
   const [streaming, setStreaming] = useState(false);
@@ -50,6 +52,10 @@ export function ChatWindow({
 
   async function handleSend(message: string) {
     setError(null);
+    // The server generates a real session title from the first exchange —
+    // refresh afterward so the sidebar (a Server Component) picks it up
+    // instead of showing "แชทใหม่" until the next full navigation.
+    const isFirstMessage = messages.length === 0;
     const userMsg: ChatMessageView = { id: `local-${Date.now()}`, role: "user", content: message };
     const assistantId = `local-${Date.now()}-assistant`;
     setMessages((prev) => [...prev, userMsg, { id: assistantId, role: "assistant", content: "" }]);
@@ -76,6 +82,7 @@ export function ChatWindow({
         acc += decoder.decode(value, { stream: true });
         setMessages((prev) => prev.map((m) => (m.id === assistantId ? { ...m, content: acc } : m)));
       }
+      if (isFirstMessage) router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
       setMessages((prev) => prev.filter((m) => m.id !== assistantId));
