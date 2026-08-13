@@ -13,6 +13,7 @@ export interface GenerateTopicSummaryParams {
   openRouterModel?: string;
   geminiApiKey?: string;
   geminiModel?: string;
+  maxTokens?: number;
 }
 
 export interface GenerateTopicSummaryResult {
@@ -33,6 +34,7 @@ export async function generateTopicSummary(
       openRouterModel: params.openRouterModel,
       geminiApiKey: params.geminiApiKey,
       geminiModel: params.geminiModel,
+      maxTokens: params.maxTokens ?? 3072,
     },
     deps,
   );

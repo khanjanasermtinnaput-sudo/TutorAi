@@ -8,6 +8,7 @@ export interface GenerateQuizParams extends QuizGenerationParams {
   openRouterModel?: string;
   geminiApiKey?: string;
   geminiModel?: string;
+  maxTokens?: number;
 }
 
 export interface GenerateQuizResult {
@@ -28,6 +29,7 @@ export async function generateQuiz(params: GenerateQuizParams, deps?: RouteChatD
       openRouterModel: params.openRouterModel,
       geminiApiKey: params.geminiApiKey,
       geminiModel: params.geminiModel,
+      maxTokens: params.maxTokens ?? 4096,
     },
     deps,
   );

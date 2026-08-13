@@ -11,6 +11,7 @@ export interface RouteChatParams {
   geminiApiKey?: string;
   geminiModel?: string;
   temperature?: number;
+  maxTokens?: number;
 }
 
 export interface RouteChatResult {
@@ -34,6 +35,7 @@ const DEFAULT_DEPS: RouteChatDeps = {
         ? [{ role: "system", content: params.systemInstruction }, ...params.messages]
         : params.messages,
       temperature: params.temperature,
+      maxTokens: params.maxTokens,
       signal,
     }),
   gemini: (params, signal) =>

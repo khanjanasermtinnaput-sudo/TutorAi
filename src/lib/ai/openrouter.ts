@@ -10,6 +10,7 @@ export interface OpenRouterStreamParams {
   model: string;
   messages: ChatMessage[];
   temperature?: number;
+  maxTokens?: number;
   signal?: AbortSignal;
 }
 
@@ -20,6 +21,7 @@ export async function* streamOpenRouterCompletion({
   model,
   messages,
   temperature = 0.7,
+  maxTokens = 2048,
   signal,
 }: OpenRouterStreamParams): AsyncGenerator<string> {
   const res = await fetch(OPENROUTER_URL, {
@@ -28,7 +30,7 @@ export async function* streamOpenRouterCompletion({
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ model, messages, temperature, stream: true }),
+    body: JSON.stringify({ model, messages, temperature, max_tokens: maxTokens, stream: true }),
     signal,
   });
 

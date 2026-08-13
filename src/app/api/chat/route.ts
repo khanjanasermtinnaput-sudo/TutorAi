@@ -72,6 +72,7 @@ export async function POST(request: NextRequest) {
       openRouterModel: process.env.OPENROUTER_MODEL,
       geminiApiKey: process.env.GEMINI_API_KEY,
       geminiModel: process.env.GEMINI_MODEL || "gemini-3.6-flash",
+      maxTokens: 1024,
     });
   } catch (err) {
     if (err instanceof AllProvidersFailedError) {
