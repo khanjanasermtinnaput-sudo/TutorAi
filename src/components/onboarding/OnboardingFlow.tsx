@@ -11,7 +11,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const STEP_TITLES = ["ยินดีต้อนรับสู่ Tutor AI", "วันเกิดของคุณ", "ระดับชั้นเรียน"];
 
-export function OnboardingFlow({ userId }: { userId: string }) {
+export function OnboardingFlow({ userId, userEmail }: { userId: string; userEmail: string }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [nickname, setNickname] = useState("");
@@ -24,15 +24,21 @@ export function OnboardingFlow({ userId }: { userId: string }) {
     setSubmitting(true);
     setError(null);
     const supabase = createClient();
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({
+    // upsert, not update: a user who already had an auth.users row from another
+    // app sharing this Supabase project (e.g. Co.Ai) never gets a profiles row
+    // from the on-signup trigger, since that only fires on INSERT. update() would
+    // silently match 0 rows for them and never set onboarding_completed.
+    const { error: updateError } = await supabase.from("profiles").upsert(
+      {
+        id: userId,
+        email: userEmail,
         nickname,
         birth_date: birthDate,
         education_level: educationLevel,
         onboarding_completed: true,
-      })
-      .eq("id", userId);
+      },
+      { onConflict: "id" }
+    );
 
     if (updateError) {
       setError("บันทึกข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง");
