@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { GlassModal } from "@/components/glass/GlassModal";
 import { GlassButton } from "@/components/glass/GlassButton";
 import { GlassPillSelector } from "@/components/glass/GlassPillSelector";
@@ -110,6 +111,14 @@ export function QuizGeneratorModal({
         <GlassButton onClick={handleSubmit} disabled={!canSubmit} className="w-full">
           {submitting ? "กำลังสร้างข้อสอบ..." : "สร้างข้อสอบ"}
         </GlassButton>
+
+        <Link
+          href={`/quiz/new?sessionId=${sessionId}`}
+          onClick={() => onOpenChange(false)}
+          className="text-center text-sm text-ink-secondary hover:text-accent-primary"
+        >
+          หรือสร้างข้อสอบเอง
+        </Link>
       </div>
     </GlassModal>
   );

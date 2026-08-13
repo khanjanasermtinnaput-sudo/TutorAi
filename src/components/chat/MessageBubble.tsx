@@ -5,6 +5,7 @@ import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import { GlassChatBubble } from "@/components/glass/GlassChatBubble";
+import { SaveFormulaButton } from "@/components/formula/SaveFormulaButton";
 
 export interface Citation {
   title: string;
@@ -34,6 +35,7 @@ export function MessageBubble({
           <p className="whitespace-pre-wrap">{content}</p>
         )}
       </GlassChatBubble>
+      {role === "assistant" && <SaveFormulaButton text={content} source="chat" className="mt-1" />}
       {citations && citations.length > 0 && (
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {citations.map((c) => (

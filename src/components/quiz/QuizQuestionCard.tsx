@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { GlassCard } from "@/components/glass/GlassCard";
 import { InlineMath } from "@/components/InlineMath";
+import { SaveFormulaButton } from "@/components/formula/SaveFormulaButton";
 import { cn } from "@/lib/utils/cn";
 
 export type ChoiceKey = "A" | "B" | "C" | "D";
@@ -36,6 +37,7 @@ type QuizQuestionCardProps = AnswerModeProps | ReviewModeProps;
 export function QuizQuestionCard(props: QuizQuestionCardProps) {
   const [expanded, setExpanded] = useState(false);
   const { index, questionText, choices } = props;
+  const allText = [questionText, ...Object.values(choices), props.mode === "review" ? props.explanation : ""].join(" ");
 
   return (
     <GlassCard className="p-5">
@@ -82,6 +84,8 @@ export function QuizQuestionCard(props: QuizQuestionCardProps) {
           );
         })}
       </div>
+
+      <SaveFormulaButton text={allText} source="quiz" className="mt-2" />
 
       {props.mode === "review" && (
         <div className="mt-3">

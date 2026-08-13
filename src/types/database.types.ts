@@ -986,6 +986,7 @@ export type Database = {
           question_count: number
           score: number | null
           session_id: string | null
+          source: string
           status: string
           subject_id: string | null
           topic: string
@@ -999,6 +1000,7 @@ export type Database = {
           question_count: number
           score?: number | null
           session_id?: string | null
+          source?: string
           status?: string
           subject_id?: string | null
           topic: string
@@ -1012,6 +1014,7 @@ export type Database = {
           question_count?: number
           score?: number | null
           session_id?: string | null
+          source?: string
           status?: string
           subject_id?: string | null
           topic?: string
@@ -1214,6 +1217,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "referral_codes"
             referencedColumns: ["code"]
+          },
+        ]
+      }
+      saved_formulas: {
+        Row: {
+          created_at: string
+          id: string
+          label: string | null
+          latex: string
+          source: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          latex: string
+          source?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          latex?: string
+          source?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_formulas_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           },
         ]
       }
