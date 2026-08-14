@@ -23,29 +23,42 @@ export interface GenerateSessionTitleParams {
   geminiModel?: string;
 }
 
+async function attemptTitle(params: GenerateSessionTitleParams, deps?: RouteChatDeps): Promise<string | null> {
+  const routed = await routeChatCompletion(
+    {
+      messages: [{ role: "user", content: `คำถาม: ${params.userMessage}\n\nคำตอบ: ${params.assistantReply}` }],
+      systemInstruction: TITLE_SYSTEM_PROMPT,
+      openRouterApiKey: params.openRouterApiKey,
+      openRouterModel: params.openRouterModel,
+      geminiApiKey: params.geminiApiKey,
+      geminiModel: params.geminiModel,
+      // Reasoning models spend some of this budget "thinking" before any
+      // title content — 30 was too tight and produced truncated fragments.
+      maxTokens: 80,
+    },
+    deps,
+  );
+  const text = await collectChunks(routed.chunks);
+  return sanitizeTitle(text);
+}
+
 /** Generates a short title for a chat session from its first exchange.
  * Never throws — a title is a nice-to-have, not something that should ever
- * take down the chat response it's derived from. */
+ * take down the chat response it's derived from. One retry after a short
+ * delay absorbs transient upstream rate-limits on free-tier model pools. */
 export async function generateSessionTitle(
   params: GenerateSessionTitleParams,
   deps?: RouteChatDeps,
+  retryDelayMs = 1500,
 ): Promise<string | null> {
   try {
-    const routed = await routeChatCompletion(
-      {
-        messages: [{ role: "user", content: `คำถาม: ${params.userMessage}\n\nคำตอบ: ${params.assistantReply}` }],
-        systemInstruction: TITLE_SYSTEM_PROMPT,
-        openRouterApiKey: params.openRouterApiKey,
-        openRouterModel: params.openRouterModel,
-        geminiApiKey: params.geminiApiKey,
-        geminiModel: params.geminiModel,
-        maxTokens: 30,
-      },
-      deps,
-    );
-    const text = await collectChunks(routed.chunks);
-    return sanitizeTitle(text);
+    return await attemptTitle(params, deps);
   } catch {
-    return null;
+    await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+    try {
+      return await attemptTitle(params, deps);
+    } catch {
+      return null;
+    }
   }
 }

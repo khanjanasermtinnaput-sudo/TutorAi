@@ -42,13 +42,28 @@ test("generateSessionTitle: truncates an overly long answer", async () => {
   assert.equal(title!.length, 60);
 });
 
-test("generateSessionTitle: returns null (never throws) when both providers fail", async () => {
+test("generateSessionTitle: returns null (never throws) when both providers fail on both attempts", async () => {
   const deps: RouteChatDeps = {
     openrouter: () => throwing("OpenRouter down"),
     gemini: () => throwing("Gemini down"),
   };
-  const title = await generateSessionTitle(baseParams, deps);
+  const title = await generateSessionTitle(baseParams, deps, 0);
   assert.equal(title, null);
+});
+
+test("generateSessionTitle: retries once and succeeds after a transient failure", async () => {
+  let calls = 0;
+  const deps: RouteChatDeps = {
+    openrouter: () => {
+      calls += 1;
+      if (calls === 1) return throwing("rate limited");
+      return gen("อนุพันธ์เบื้องต้น");
+    },
+    gemini: () => throwing("Gemini down"),
+  };
+  const title = await generateSessionTitle(baseParams, deps, 0);
+  assert.equal(title, "อนุพันธ์เบื้องต้น");
+  assert.equal(calls, 2);
 });
 
 test("generateSessionTitle: returns null when the provider answers with only whitespace/quotes", async () => {

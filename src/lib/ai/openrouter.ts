@@ -30,7 +30,17 @@ export async function* streamOpenRouterCompletion({
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ model, messages, temperature, max_tokens: maxTokens, stream: true }),
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature,
+      max_tokens: maxTokens,
+      stream: true,
+      // Free-tier reasoning models on OpenRouter otherwise spend many seconds
+      // "thinking" before any content delta, blowing past FIRST_CHUNK_TIMEOUT_MS
+      // in ai-router.ts. Ignored by models that don't support reasoning.
+      reasoning: { effort: "low" },
+    }),
     signal,
   });
 
