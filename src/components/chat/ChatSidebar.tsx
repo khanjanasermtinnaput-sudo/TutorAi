@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Plus, MessageSquare } from "lucide-react";
+import { Plus, MessageSquare, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
-import { createChatSession } from "@/app/(main)/actions";
+import { createChatSession, deleteChatSession } from "@/app/(main)/actions";
 
 export interface SessionListItem {
   id: string;
@@ -29,17 +29,38 @@ export function ChatSidebar({ sessions }: { sessions: SessionListItem[] }) {
         {sessions.map((s) => {
           const active = pathname === `/chat/${s.id}`;
           return (
-            <Link
-              key={s.id}
-              href={`/chat/${s.id}`}
-              className={cn(
-                "flex items-center gap-2 truncate rounded-md px-3 py-2 text-sm",
-                active ? "bg-gradient-liquid text-white" : "text-ink-secondary hover:text-ink-primary",
-              )}
-            >
-              <MessageSquare className="h-4 w-4 shrink-0" />
-              <span className="truncate">{s.title}</span>
-            </Link>
+            <div key={s.id} className="group relative flex items-center">
+              <Link
+                href={`/chat/${s.id}`}
+                className={cn(
+                  "flex flex-1 items-center gap-2 truncate rounded-md py-2 pl-3 pr-8 text-sm",
+                  active ? "bg-gradient-liquid text-white" : "text-ink-secondary hover:text-ink-primary",
+                )}
+              >
+                <MessageSquare className="h-4 w-4 shrink-0" />
+                <span className="truncate">{s.title}</span>
+              </Link>
+              <form
+                action={deleteChatSession}
+                className="absolute right-1 opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                <input type="hidden" name="sessionId" value={s.id} />
+                <input type="hidden" name="redirectTo" value={active ? "/chat" : ""} />
+                <button
+                  type="submit"
+                  aria-label="ลบแชท"
+                  onClick={(e) => {
+                    if (!confirm("ลบแชทนี้หรือไม่? ข้อความทั้งหมดจะถูกลบถาวร")) e.preventDefault();
+                  }}
+                  className={cn(
+                    "rounded p-1 hover:text-error",
+                    active ? "text-white/80" : "text-ink-muted",
+                  )}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </form>
+            </div>
           );
         })}
       </nav>
