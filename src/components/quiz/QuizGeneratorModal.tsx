@@ -108,8 +108,8 @@ export function QuizGeneratorModal({
 
         {error && <p className="text-sm text-error">{error}</p>}
 
-        <GlassButton onClick={handleSubmit} disabled={!canSubmit} className="w-full">
-          {submitting ? "กำลังสร้างข้อสอบ..." : "สร้างข้อสอบ"}
+        <GlassButton onClick={handleSubmit} disabled={!canSubmit} loading={submitting} className="w-full">
+          {submitting ? "กำลังสร้างข้อสอบ" : "สร้างข้อสอบ"}
         </GlassButton>
 
         <Link

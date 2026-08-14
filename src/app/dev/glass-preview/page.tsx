@@ -8,6 +8,8 @@ import { GlassButton } from "@/components/glass/GlassButton";
 import { GlassModal } from "@/components/glass/GlassModal";
 import { GlassFab } from "@/components/glass/GlassFab";
 import { GlassChatBubble } from "@/components/glass/GlassChatBubble";
+import { ThinkingDots } from "@/components/glass/ThinkingDots";
+import { StreamingCursor } from "@/components/glass/StreamingCursor";
 import { GlassPillSelector } from "@/components/glass/GlassPillSelector";
 import { QuizQuestionCard } from "@/components/quiz/QuizQuestionCard";
 import { QuizProgressBar } from "@/components/quiz/QuizProgressBar";
@@ -106,6 +108,24 @@ export default function GlassPreviewPage() {
           <div className="flex flex-col gap-3">
             <GlassChatBubble role="assistant">สวัสดีครับ วันนี้อยากเรียนเรื่องอะไรดี?</GlassChatBubble>
             <GlassChatBubble role="user">อยากทบทวนเรื่องอนุพันธ์ครับ</GlassChatBubble>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 font-display text-heading-md font-semibold text-ink-primary">
+            Thinking / streaming indicators (Gemini-style)
+          </h2>
+          <div className="flex flex-col gap-3">
+            <GlassChatBubble role="assistant">
+              <ThinkingDots />
+            </GlassChatBubble>
+            <GlassChatBubble role="assistant">
+              อนุพันธ์ของ $x^2$ คือ $2x$ ครับ
+              <StreamingCursor className="ml-0.5" />
+            </GlassChatBubble>
+            <GlassButton loading className="w-fit">
+              กำลังสร้างข้อสอบ
+            </GlassButton>
           </div>
         </section>
 

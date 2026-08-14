@@ -107,9 +107,13 @@ export function ChatWindow({
       </div>
 
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-1 py-2">
-        {messages.map((m) => (
-          <MessageBubble key={m.id} role={m.role} content={m.content} citations={m.citations} />
-        ))}
+        {messages.map((m, i) => {
+          const isLastAssistant = streaming && i === messages.length - 1 && m.role === "assistant";
+          const streamState = !isLastAssistant ? "idle" : m.content === "" ? "thinking" : "streaming";
+          return (
+            <MessageBubble key={m.id} role={m.role} content={m.content} citations={m.citations} streamState={streamState} />
+          );
+        })}
         <div ref={bottomRef} />
       </div>
 

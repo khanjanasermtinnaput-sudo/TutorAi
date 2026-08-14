@@ -5,6 +5,8 @@ import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import { GlassChatBubble } from "@/components/glass/GlassChatBubble";
+import { ThinkingDots } from "@/components/glass/ThinkingDots";
+import { StreamingCursor } from "@/components/glass/StreamingCursor";
 import { SaveFormulaButton } from "@/components/formula/SaveFormulaButton";
 
 export interface Citation {
@@ -17,19 +19,24 @@ export function MessageBubble({
   role,
   content,
   citations,
+  streamState = "idle",
 }: {
   role: "user" | "assistant";
   content: string;
   citations?: Citation[] | null;
+  streamState?: "idle" | "thinking" | "streaming";
 }) {
   return (
     <div className={`flex flex-col ${role === "user" ? "items-end" : "items-start"}`}>
       <GlassChatBubble role={role}>
-        {role === "assistant" ? (
+        {streamState === "thinking" ? (
+          <ThinkingDots />
+        ) : role === "assistant" ? (
           <div className="prose prose-sm max-w-none prose-p:my-2 prose-headings:text-ink-primary prose-p:text-ink-primary">
             <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>
               {content}
             </ReactMarkdown>
+            {streamState === "streaming" && <StreamingCursor className="ml-0.5" />}
           </div>
         ) : (
           <p className="whitespace-pre-wrap">{content}</p>
