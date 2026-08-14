@@ -25,7 +25,7 @@
   --accent-primary: #3d7eff;
   --accent-primary-deep: #2657d9;
   --accent-secondary: #8b5cf6;
-  --gradient-liquid: linear-gradient(135deg, #3d7eff 0%, #8b5cf6 55%, #22d3ee 100%);
+  --gradient-liquid: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-primary-deep) 100%);
 
   /* semantic */
   --success: #22c55e;
