@@ -91,6 +91,16 @@
   border-color: color-mix(in srgb, var(--error) 35%, var(--glass-border));
 }
 
+.glass-tint-warning {
+  background-color: color-mix(in srgb, var(--warning-tint) 100%, var(--glass-surface-2));
+  border-color: color-mix(in srgb, var(--warning) 35%, var(--glass-border));
+}
+
+.glass-tint-accent {
+  background-color: color-mix(in srgb, var(--accent-primary) 12%, var(--glass-surface-2));
+  border-color: color-mix(in srgb, var(--accent-primary) 35%, var(--glass-border));
+}
+
 /* Text-on-glass contrast fallback (master prompt §2.4: scrim, never less blur) */
 .glass-scrim {
   position: relative;

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { FORMULA_SNIPPET_GROUPS, type FormulaSnippet } from "./formulaSnippets";
 import { SaveFormulaButton } from "./SaveFormulaButton";
 import { cn } from "@/lib/utils/cn";
@@ -39,17 +40,20 @@ export function FormulaToolbar({
       {FORMULA_SNIPPET_GROUPS.map((group) => (
         <div key={group.label} className="flex items-center gap-1">
           {group.snippets.map((snippet) => (
-            <button
+            <motion.button
               key={snippet.id}
               type="button"
               aria-label={snippet.ariaLabel}
               title={snippet.ariaLabel}
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => insertSnippet(snippet)}
-              className="glass-surface flex h-7 min-w-7 items-center justify-center rounded-md px-1.5 text-sm text-ink-secondary transition-colors hover:text-accent-primary"
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ type: "spring", stiffness: 380, damping: 22 }}
+              className="glass-surface flex h-7 min-w-7 items-center justify-center rounded-md px-1.5 text-sm text-ink-secondary hover:text-accent-primary"
             >
               {snippet.label}
-            </button>
+            </motion.button>
           ))}
         </div>
       ))}

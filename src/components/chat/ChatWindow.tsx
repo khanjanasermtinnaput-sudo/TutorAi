@@ -36,6 +36,10 @@ export function ChatWindow({
   const [error, setError] = useState<string | null>(null);
   const [quizModalOpen, setQuizModalOpen] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  // History loaded on mount renders settled; only messages appended after
+  // that (new sends) get the pop-in — otherwise a whole conversation
+  // animates in at once on every page load.
+  const historyIds = useRef(new Set(initialMessages.map((m) => m.id)));
 
   // Simple auto-suggest: the student's most recent message, as a topic starting point.
   const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content;
@@ -111,7 +115,14 @@ export function ChatWindow({
           const isLastAssistant = streaming && i === messages.length - 1 && m.role === "assistant";
           const streamState = !isLastAssistant ? "idle" : m.content === "" ? "thinking" : "streaming";
           return (
-            <MessageBubble key={m.id} role={m.role} content={m.content} citations={m.citations} streamState={streamState} />
+            <MessageBubble
+              key={m.id}
+              role={m.role}
+              content={m.content}
+              citations={m.citations}
+              streamState={streamState}
+              animateIn={!historyIds.current.has(m.id)}
+            />
           );
         })}
         <div ref={bottomRef} />

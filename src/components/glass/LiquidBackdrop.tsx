@@ -8,7 +8,7 @@
 export function LiquidBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute left-1/2 top-[-20rem] h-[50rem] w-[50rem] -translate-x-1/2 rounded-full bg-accent-primary opacity-[0.10] blur-[140px]" />
+      <div className="liquid-drift absolute left-1/2 top-[-20rem] h-[50rem] w-[50rem] -translate-x-1/2 rounded-full bg-accent-primary opacity-[0.10] blur-[140px]" />
     </div>
   );
 }

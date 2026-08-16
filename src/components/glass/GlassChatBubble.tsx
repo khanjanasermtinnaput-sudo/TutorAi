@@ -7,13 +7,17 @@ export interface GlassChatBubbleProps {
   role: "user" | "assistant";
   children: React.ReactNode;
   className?: string;
+  /** False for messages already present on load (chat history) — skips the
+   * pop-in so a whole conversation doesn't animate in at once. */
+  animateIn?: boolean;
 }
 
 /** AI bubble: deep glass surface, corner nearest the avatar pinched smaller
  * (asymmetric, like a droplet clinging to glass). User bubble: the liquid
  * gradient at reduced opacity so text stays readable, with a lighter blur. */
-export function GlassChatBubble({ role, children, className }: GlassChatBubbleProps) {
+export function GlassChatBubble({ role, children, className, animateIn = true }: GlassChatBubbleProps) {
   const isUser = role === "user";
+  const initial = animateIn ? { opacity: 0, y: 12, scale: 0.97 } : false;
 
   if (isUser) {
     // The gradient sits on its own layer at 85% opacity so the white text on
@@ -22,7 +26,7 @@ export function GlassChatBubble({ role, children, className }: GlassChatBubblePr
     // gradients, so this needs a separate layered div rather than a class.
     return (
       <motion.div
-        initial={{ opacity: 0, y: 12, scale: 0.97 }}
+        initial={initial}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: "spring", stiffness: 360, damping: 26 }}
         className={cn(
@@ -38,7 +42,7 @@ export function GlassChatBubble({ role, children, className }: GlassChatBubblePr
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12, scale: 0.97 }}
+      initial={initial}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ type: "spring", stiffness: 360, damping: 26 }}
       className={cn(

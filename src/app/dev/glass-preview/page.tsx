@@ -67,6 +67,8 @@ export default function GlassPreviewPage() {
           <div className="grid grid-cols-2 gap-4">
             <GlassCard tint="success" className="p-4 text-ink-primary">ถูกต้อง! คำตอบคือ B</GlassCard>
             <GlassCard tint="error" className="p-4 text-ink-primary">ไม่ถูกต้อง คำตอบที่ถูกคือ C</GlassCard>
+            <GlassCard tint="warning" className="p-4 text-ink-primary">จุดที่ออกข้อสอบบ่อย</GlassCard>
+            <GlassCard tint="accent" className="p-4 text-ink-primary">ตัวเลือกที่กำลังเลือกอยู่ (ยังไม่เฉลย)</GlassCard>
           </div>
         </section>
 
@@ -78,6 +80,13 @@ export default function GlassPreviewPage() {
             <GlassButton variant="ghost">Ghost</GlassButton>
             <GlassButton variant="primary" disabled>
               Disabled
+            </GlassButton>
+          </div>
+          <p className="mb-2 mt-4 text-sm text-ink-secondary">Sidebar reuse (ChatSidebar &quot;New Chat&quot;) — GlassButton restyled to a full-width row instead of a pill:</p>
+          <div className="max-w-xs">
+            <GlassButton variant="glass" size="sm" className="w-full justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium">
+              <Sparkles className="h-4 w-4" />
+              แชทใหม่
             </GlassButton>
           </div>
         </section>

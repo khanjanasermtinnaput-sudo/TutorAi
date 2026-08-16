@@ -50,18 +50,21 @@ export function QuizQuestionCard(props: QuizQuestionCardProps) {
           if (props.mode === "answer") {
             const isSelected = props.selected === key;
             return (
-              <button
+              <motion.button
                 key={key}
                 type="button"
                 onClick={() => props.onSelect(key)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 380, damping: 24 }}
                 className={cn(
-                  "glass-surface rounded-md p-3 text-left text-sm transition-colors",
-                  isSelected ? "border-accent-primary bg-gradient-liquid text-white" : "text-ink-secondary hover:text-ink-primary",
+                  "glass-surface rounded-md p-3 text-left text-sm",
+                  isSelected ? "glass-tint-accent border-accent-primary text-ink-primary" : "text-ink-secondary hover:text-ink-primary",
                 )}
               >
                 <span className="mr-2 font-semibold">{key}.</span>
                 <InlineMath text={label} />
-              </button>
+              </motion.button>
             );
           }
 

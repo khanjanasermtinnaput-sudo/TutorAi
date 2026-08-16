@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Plus, MessageSquare, Trash2 } from "lucide-react";
+import { GlassButton } from "@/components/glass/GlassButton";
 import { cn } from "@/lib/utils/cn";
 import { createChatSession, deleteChatSession } from "@/app/(main)/actions";
 
@@ -17,13 +18,15 @@ export function ChatSidebar({ sessions }: { sessions: SessionListItem[] }) {
   return (
     <aside className="glass-surface glass-surface-deep flex h-full w-64 shrink-0 flex-col gap-2 rounded-lg p-3">
       <form action={createChatSession}>
-        <button
+        <GlassButton
           type="submit"
-          className="glass-surface flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-ink-primary hover:text-accent-primary"
+          variant="glass"
+          size="sm"
+          className="w-full justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium text-ink-primary hover:text-accent-primary"
         >
           <Plus className="h-4 w-4" />
           แชทใหม่
-        </button>
+        </GlassButton>
       </form>
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">
         {sessions.map((s) => {

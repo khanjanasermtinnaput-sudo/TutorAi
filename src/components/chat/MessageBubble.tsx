@@ -20,15 +20,17 @@ export function MessageBubble({
   content,
   citations,
   streamState = "idle",
+  animateIn = true,
 }: {
   role: "user" | "assistant";
   content: string;
   citations?: Citation[] | null;
   streamState?: "idle" | "thinking" | "streaming";
+  animateIn?: boolean;
 }) {
   return (
     <div className={`flex flex-col ${role === "user" ? "items-end" : "items-start"}`}>
-      <GlassChatBubble role={role}>
+      <GlassChatBubble role={role} animateIn={animateIn}>
         {streamState === "thinking" ? (
           <ThinkingDots />
         ) : role === "assistant" ? (

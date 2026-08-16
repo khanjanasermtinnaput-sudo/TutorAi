@@ -9,7 +9,7 @@ export function FrequentlyTestedList({ items }: { items: string[] }) {
       <h2 className="mb-3 font-display text-heading-md font-semibold text-ink-primary">จุดที่ออกข้อสอบบ่อย</h2>
       <div className="flex flex-col gap-2">
         {items.map((item, i) => (
-          <GlassCard key={i} tint="error" className="flex items-start gap-2 p-3">
+          <GlassCard key={i} tint="warning" className="flex items-start gap-2 p-3">
             <FrequentlyTestedBadge />
             <span className="text-sm text-ink-primary">
               <InlineMath text={item} />

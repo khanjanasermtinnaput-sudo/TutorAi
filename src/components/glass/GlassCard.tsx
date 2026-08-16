@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 export interface GlassCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   /** Surface depth — deeper layers blur more, top layers less but with a bigger shadow (§2.1.4). */
   depth?: "deep" | "mid" | "top";
-  tint?: "none" | "success" | "error";
+  tint?: "none" | "success" | "error" | "warning" | "accent";
   /** Adds a dark scrim under content when a surface needs guaranteed WCAG AA contrast (§2.4). */
   scrim?: boolean;
   radius?: "sm" | "md" | "lg" | "xl";
@@ -40,6 +40,8 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function Gla
         RADIUS_CLASS[radius],
         tint === "success" && "glass-tint-success",
         tint === "error" && "glass-tint-error",
+        tint === "warning" && "glass-tint-warning",
+        tint === "accent" && "glass-tint-accent",
         scrim && "glass-scrim",
         className,
       )}

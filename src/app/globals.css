@@ -22,6 +22,26 @@ body {
   }
 }
 
+/* Ambient backdrop glow (LiquidBackdrop) drifts slowly so the light source
+   reads as alive rather than pinned in place. Scoped to the no-preference
+   media query rather than a JS check — under reduced-motion the element
+   simply keeps its static Tailwind transform. */
+@keyframes liquid-drift {
+  0%,
+  100% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  50% {
+    transform: translate(-46%, 2%) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .liquid-drift {
+    animation: liquid-drift 26s ease-in-out infinite;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

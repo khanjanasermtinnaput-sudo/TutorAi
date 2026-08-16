@@ -35,7 +35,7 @@ export function EducationLevelStep({
                   className={cn(
                     "rounded-md border px-3 py-2 text-sm transition-colors",
                     value === level.value
-                      ? "border-accent-primary bg-gradient-liquid text-white"
+                      ? "glass-tint-accent border-accent-primary text-ink-primary"
                       : "border-glass-border bg-canvas-elevated text-ink-secondary hover:text-ink-primary",
                   )}
                 >
