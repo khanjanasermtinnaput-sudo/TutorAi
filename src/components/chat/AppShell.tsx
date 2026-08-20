@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, BookMarked } from "lucide-react";
+import { Menu, BookMarked, Settings } from "lucide-react";
 import { ChatSidebar, type SessionListItem } from "./ChatSidebar";
 import { SignOutButton } from "./SignOutButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -68,6 +68,14 @@ export function AppShell({
           </div>
           <div className="flex items-center gap-3">
             {nickname && <span className="hidden text-sm text-ink-secondary sm:inline">{nickname}</span>}
+            <Link
+              href="/settings"
+              aria-label="ตั้งค่า"
+              className="flex items-center gap-1.5 text-ink-secondary hover:text-ink-primary"
+            >
+              <Settings className="h-5 w-5" />
+              <span className="hidden text-sm sm:inline">ตั้งค่า</span>
+            </Link>
             <Link
               href="/formulas"
               aria-label="สูตรของฉัน"
